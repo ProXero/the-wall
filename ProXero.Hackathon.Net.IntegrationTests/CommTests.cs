@@ -17,10 +17,10 @@ namespace ProXero.Hackathon.Net.IntegrationTests
 			Server s = new Server();
 			Client c = new Client();
 
-			Thread.Sleep(13000);
+			Thread.Sleep(3000);
 
-			c.Close();
 			s.Close();
+			c.Close();
 		}
 	}
 }

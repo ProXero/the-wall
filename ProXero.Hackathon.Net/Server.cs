@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProXero.Hackathon.Net.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace ProXero.Hackathon.Net
 					new Dictionary<ushort, ProtocolConfiguration>();
 
 			protocolConfigurations.Add(AuthProtocol.PROTOCOL_IDENTIFIER,
-				new ProtocolConfiguration(AuthProtocol.PROTOCOL_IDENTIFIER, typeof(AuthProtocol)));
+				new ProtocolConfiguration(AuthProtocol.PROTOCOL_IDENTIFIER, typeof(AuthProtocolServer)));
 			protocolConfigurations.Add(KeepAliveProtocol.PROTOCOL_IDENTIFIER,
 				new ProtocolConfiguration(KeepAliveProtocol.PROTOCOL_IDENTIFIER, typeof(KeepAliveProtocol)));
 

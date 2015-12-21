@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProXero.Hackathon.Net.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -20,19 +21,20 @@ namespace ProXero.Hackathon.Net
 		{
 			ServerConfiguration serverConf = new ServerConfiguration();
 			serverConf.Host = "localhost";
+
 			Dictionary<ushort, ProtocolConfiguration> protocolConfigurations =
 					new Dictionary<ushort, ProtocolConfiguration>();
 
 			protocolConfigurations.Add(AuthProtocol.PROTOCOL_IDENTIFIER,
-				new ProtocolConfiguration(AuthProtocol.PROTOCOL_IDENTIFIER, typeof(AuthProtocol)));
+				new ProtocolConfiguration(AuthProtocol.PROTOCOL_IDENTIFIER, typeof(AuthProtocolClient)));
 			protocolConfigurations.Add(KeepAliveProtocol.PROTOCOL_IDENTIFIER,
 				new ProtocolConfiguration(KeepAliveProtocol.PROTOCOL_IDENTIFIER, typeof(KeepAliveProtocol)));
 
 			client = new US.OpenServer.Client(serverConf, protocolConfigurations);
 			client.Connect();
 
-			var wap = client.Initialize(AuthProtocol.PROTOCOL_IDENTIFIER) as AuthProtocol;
-			if (!wap.Authenticate("csabi", "T3stus3r", null))
+			var wap = client.Initialize(AuthProtocol.PROTOCOL_IDENTIFIER) as AuthProtocolClient;
+			if (!wap.Authenticate("test", "T3stus3r"))
 				throw new Exception("Access denied.");
 
 			client.Initialize(KeepAliveProtocol.PROTOCOL_IDENTIFIER);

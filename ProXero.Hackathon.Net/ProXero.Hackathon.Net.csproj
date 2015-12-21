@@ -81,7 +81,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthProtocol.cs" />
+    <Compile Include="Authentication\AuthProtocolCommands.cs" />
+    <Compile Include="Authentication\AuthProtocol.cs" />
+    <Compile Include="Authentication\AuthProtocolClient.cs" />
+    <Compile Include="Authentication\AuthProtocolConfigurationServer.cs" />
+    <Compile Include="Authentication\AuthProtocolServer.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="KeepAliveConsole.cs" />
     <Compile Include="Server.cs" />
