@@ -34,20 +34,12 @@ namespace ProXero.Hackathon.Net
 			client.Connect();
 
 			var wap = client.Initialize(AuthProtocol.PROTOCOL_IDENTIFIER) as AuthProtocolClient;
-			if (!wap.Authenticate("test", "T3stus3r"))
-				throw new Exception("Access denied.");
+			wap.Authenticate("test", "T3stus3r");
 
 			client.Initialize(KeepAliveProtocol.PROTOCOL_IDENTIFIER);
 
 			var obs = Observable.FromEventPattern<US.OpenServer.Client.OnConnectionLostHandler, object>(ev => client.OnConnectionLost += ev, ev => client.OnConnectionLost -= ev);
 			obs.Subscribe(EventArgs => connectionLost.OnNext(true));
-
-			client.OnConnectionLost += Client_OnConnectionLost;
-		}
-
-		private void Client_OnConnectionLost(object sender, Exception ex)
-		{
-
 		}
 
 		public void Close()

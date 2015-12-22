@@ -87,7 +87,6 @@
     <Compile Include="Authentication\AuthProtocolConfigurationServer.cs" />
     <Compile Include="Authentication\AuthProtocolServer.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="KeepAliveConsole.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
