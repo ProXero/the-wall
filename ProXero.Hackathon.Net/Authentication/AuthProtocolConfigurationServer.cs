@@ -9,8 +9,5 @@ namespace ProXero.Hackathon.Net.Authentication
 {
 	public class AuthProtocolConfigurationServer : ProtocolConfigurationEx
 	{
-		protected AuthProtocolConfigurationServer(ushort id, Type protocolType) : base(id, protocolType)
-		{
-		}
 	}
 }
