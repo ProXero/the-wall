@@ -12,10 +12,14 @@ using US.OpenServer.Protocols.KeepAlive;
 
 namespace ProXero.Hackathon.Net
 {
-	public class Client
+	public sealed class Client<TMessage> : IDisposable
 	{
 		private US.OpenServer.Client client = new US.OpenServer.Client();
+		
 		public readonly BehaviorSubject<bool> connectionLost = new BehaviorSubject<bool>(false);
+		MessageProtocolClient<TMessage> hpc;
+
+
 
 		public Client()
 		{
@@ -29,6 +33,8 @@ namespace ProXero.Hackathon.Net
 				new ProtocolConfiguration(AuthProtocol.PROTOCOL_IDENTIFIER, typeof(AuthProtocolClient)));
 			protocolConfigurations.Add(KeepAliveProtocol.PROTOCOL_IDENTIFIER,
 				new ProtocolConfiguration(KeepAliveProtocol.PROTOCOL_IDENTIFIER, typeof(KeepAliveProtocol)));
+			protocolConfigurations.Add(MessageProtocolClient<TMessage>.PROTOCOL_IDENTIFIER,
+				new ProtocolConfiguration(MessageProtocolClient<TMessage>.PROTOCOL_IDENTIFIER, typeof(MessageProtocolClient<TMessage>)));
 
 			client = new US.OpenServer.Client(serverConf, protocolConfigurations);
 			client.Connect();
@@ -38,13 +44,29 @@ namespace ProXero.Hackathon.Net
 
 			client.Initialize(KeepAliveProtocol.PROTOCOL_IDENTIFIER);
 
+			hpc = (MessageProtocolClient<TMessage>)client.Initialize(MessageProtocolClient<TMessage>.PROTOCOL_IDENTIFIER);
+
+			Inbox = hpc.Inbox;
+
 			var obs = Observable.FromEventPattern<US.OpenServer.Client.OnConnectionLostHandler, object>(ev => client.OnConnectionLost += ev, ev => client.OnConnectionLost -= ev);
 			obs.Subscribe(EventArgs => connectionLost.OnNext(true));
+		}
+
+		public IObservable<TMessage> Inbox { get; private set; }
+
+		public void SendMessage(TMessage message)
+		{
+			hpc.Send(message);
 		}
 
 		public void Close()
 		{
 			client.Close();
+		}
+
+		public void Dispose()
+		{
+			connectionLost.Dispose();
 		}
 	}
 }

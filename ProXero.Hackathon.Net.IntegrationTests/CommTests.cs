@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ProXero.Hackathon.Net.IntegrationTests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,18 @@ namespace ProXero.Hackathon.Net.IntegrationTests
 		[Test]
 		public void test1()
 		{
-			Server s = new Server();
-			Client c = new Client();
+			Server<MessageReceiver> s = new Server<MessageReceiver>();
+			Client<int> c = new Client<int>();
+			int result = 0;
 
-			Thread.Sleep(3000);
+			c.Inbox.Subscribe(m => result = m);
+			c.SendMessage(33);
+			
 
 			s.Close();
 			c.Close();
+
+			Assert.That(result, Is.EqualTo(133));
 		}
 	}
 }
